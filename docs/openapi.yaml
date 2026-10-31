@@ -2,20 +2,30 @@ openapi: 3.1.0
 info:
   title: Task API
   version: 1.0.0
+
 servers:
   - url: http://localhost:3000
     description: Local development servers
+
 tags:
   - name: Tasks
     description: Task-related endpoints
   - name: Monitoring
     description: Operational endpoints, such as health checks
+
 paths:
   /tasks:
     get:
       summary: List all tasks
       tags:
         - Tasks
+      parameters:
+        - name: completed
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filter tasks by completion status
       responses:
         '200':
           description: OK
@@ -25,6 +35,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
+
     post:
       summary: Create a new task
       tags:
@@ -58,6 +69,7 @@ paths:
                 example:
                   errors:
                     - 'Title must be at least 3 characters'
+
   /health:
     get:
       summary: Health Check
@@ -75,6 +87,7 @@ paths:
                   status:
                     type: string
                     example: ok
+
 components:
   schemas:
     Task:
